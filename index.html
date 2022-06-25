@@ -1,0 +1,1168 @@
+<html><head> 
+  <title>Music Player</title> 
+ </head> 
+ <body> 
+  <style>
+        #musicplayername {
+            color: rgba(0, 0, 0, 0.000000000001);
+            font-size: 35px;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .search-icon {
+            font-size: 15px;
+            margin: 15px 15px 10px 25px;
+            border: 0px solid black;
+            border-radius: 20%;
+            padding: 5px 5px 5px 5px;
+        }
+
+        .back-icon {
+            font-size: 16px;
+            margin: 0px 0px 0px 0px;
+            width: 55px;
+            border: 0px solid white;
+            border-width: 5px 0px 5px 5px;
+            border-radius: 0%;
+            padding: 5px;
+            display: block;
+            color: grey;
+            background-color: #000;
+            height: 55px;
+            box-sizing: border-box;
+        }
+
+        .material-icons {
+            border: 0px solid #504a6b;
+            font-size: 20px;
+            box-type: borderbox;
+            font-weight: 500;
+            padding: auto auto auto auto;
+            margin: auto 15px auto 15px;
+            text-align: left;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+        }
+
+        .container {
+            padding: 20px;
+            box-sizing: border-box;
+            width: 100%;
+            min-height: 100vh;
+            padding-bottom: 100px;
+            background: #000;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 20px 20px #0000ff;
+        }
+
+        .card {
+            background: #000;
+            width: 100%;
+            display: flex;
+            border: 5px solid #fff;
+            justify-content: space-between;
+            border-radius: 30px;
+            box-shadow: 3px 4px 12px 8px #0000ff;
+            overflow: hidden;
+            margin-bottom: 50px;
+        }
+
+        .title {
+            font-size: 25px;
+            margin: 25px 0 10px 0px;
+            width: 100%;
+            word-break: nowrap;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: handlee;
+            text-align: center;
+            color: white;
+        }
+
+        .author {
+            margin: 15px 0 0 0;
+            color: #818181;
+            width: 100%;
+            word-break: nowrap;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: handlee;
+            font-size: 15px;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .panel {
+            width: 100%;
+        }
+
+        .panel button {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            text-align: center;
+        }
+
+        .playbtn {
+            transform: scale(1);
+            text-align: center;
+        }
+
+        .panel {
+            transform: scale(1);
+            text-align: center;
+        }
+
+        .control {
+            margin: 40px 0 20px 0px;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .banner {
+            width: 100%;
+            height: 200px;
+            background: ;
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+            position: sticky;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        nav {
+            width: 100%;
+            height: 55px;
+            display: flex;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 3;
+            transition: 0.5s;
+        }
+
+        .icon {
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+
+        .text {
+            color: #fff;
+            text-shadow: 0 0 25px #000;
+            font-size: 35px;
+            font-style: italic;
+            font-weight: 1000;
+        }
+
+        .searchbar {
+            width: 100%;
+            height: 55px;
+            background-color: transparent;
+            display: flex;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            z-index: 4;
+            transition: 0.35s;
+        }
+
+        .icon {
+            min-width: 55px;
+        }
+
+        .back {
+            color: #000;
+        }
+
+        #inp {
+            font-size: 16px;
+            border: 0px solid #fff;
+            border-width: 5px 5px 5px 0px;
+            background-color: #000;
+            outline: none;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-style: italic;
+            font-weight: 600;
+        }
+
+        .loadingmusic {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            z-index: 7;
+            background: #000;
+            color: #ffff00;
+            width: 100%;
+            height: 30px;
+            transform: scaleY(0);
+            transition: 0.5s;
+            transform-origin: bottom;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loader div:nth-child(1) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 0s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 0s;
+            -webkit-animation-iteration-count: infinite;
+            transition: 1s;
+        }
+
+        .loader div:nth-child(2) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 0.08s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 0.08s;
+            -webkit-animation-iteration-count: infinite;
+            transition: 2s;
+        }
+
+        .loader div:nth-child(3) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 0.16s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 0.16s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 3s;
+        }
+
+        .loader div:nth-child(4) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 0.24s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 0.24s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 4s;
+        }
+
+        .loader div:nth-child(5) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 0.32s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 0.32s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 5s;
+        }
+
+        .loader div:nth-child(6) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 0.40s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 0.40s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 6s;
+        }
+
+        .loader div:nth-child(7) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 0.48s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 0.48s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 7s;
+        }
+
+        .loader div:nth-child(8) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 0.56s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 0.56s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 0.1s;
+        }
+
+        .loader div:nth-child(9) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 0.64s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 0.64s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 9s;
+        }
+
+        .loader div:nth-child(10) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 0.72s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 0.72s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 10s;
+        }
+
+        .loader div:nth-child(11) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 0.80s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 0.80s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 1s;
+        }
+
+        .loader div:nth-child(12) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 0.88s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 0.88s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 12s;
+        }
+
+        .loader div:nth-child(13) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 0.96s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 0.96s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 13s;
+        }
+
+        .loader div:nth-child(14) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 1.04s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 1.04s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 14s;
+        }
+
+        .loader div:nth-child(15) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 1.12s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 1.12s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 15s;
+        }
+
+        .loader div:nth-child(16) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 1.20s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 1.20s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 16s;
+        }
+
+        .loader div:nth-child(17) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 1.28s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 1.28s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 16s;
+        }
+
+        .loader div:nth-child(18) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 1.36s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 1.36s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 16s;
+        }
+
+        .loader div:nth-child(19) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 1.44s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 1.44s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 16s;
+        }
+
+        .loader div:nth-child(20) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 1.52s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 1.52s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 16s;
+        }
+
+        .loader div:nth-child(21) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 1.60s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 1.60s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 16s;
+        }
+
+        .loader div:nth-child(22) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 1.68s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 1.68s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 16s;
+        }
+
+        .loader div:nth-child(23) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 1.76s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 1.76s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 16s;
+        }
+
+        .loader div:nth-child(24) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 1.84s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 1.84s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 16s;
+        }
+
+        .loader div:nth-child(25) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 1.92s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 1.92s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 16s;
+        }
+
+        .loader div:nth-child(26) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 2.00s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 2.00s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 16s;
+        }
+
+        .loader div:nth-child(27) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 2.08s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 2.08s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 16s;
+        }
+
+        .loader div:nth-child(28) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 2.16s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 2.16s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 16s;
+        }
+
+        .loader div:nth-child(29) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 2.24s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 2.24s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 16s;
+        }
+
+        .loader div:nth-child(30) {
+            animation-name: colorchange;
+            animation-duration: 1s;
+            animation-delay: 2.32s;
+            animation-iteration-count: infinite;
+            -webkit-animation-name: colorchange;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-delay: 2.32s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-transition: 16s;
+        }
+
+        @keyframes colorchange {
+            0% {
+                background: #fff;
+            }
+
+            50% {
+                background: #000;
+            }
+
+            100% {
+                background: #fff;
+            }
+        }
+
+        @-webkit-keyframes colorchange {
+            0% {
+                background: #fff;
+            }
+
+            50% {
+                background: #000;
+            }
+
+            100% {
+                background: #fff;
+            }
+        }
+
+        .loader div {
+            width: 20px;
+            height: 20px;
+            background: #000;
+            border-radius: 50%;
+            float: left;
+        }
+
+        .preloader {
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            background: #000;
+        }
+
+        .loaders {
+            width: 35px;
+            height: 35px;
+            border-top: 4px solid #fff;
+            border-bottom: 0px solid #fff;
+            border-left: 0px solid #fff;
+            border-right: 0px solid transparent;
+            border-radius: 50%;
+            animation: load 3s linear infinite;
+        }
+
+        @keyframes load {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(3600deg);
+            }
+        }
+
+        @-webkit-keyframes load {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(3600deg);
+            }
+        }
+
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #000;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sidenav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .sidenav .a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: 5px;
+            right: 25px;
+            font-size: 55px;
+            margin-left: 50px;
+        }
+
+        @media screen and (max-height: 450px) {
+            .sidenav {
+                padding-top: 15px;
+            }
+
+            .sidenav a {
+                font-size: 18px;
+            }
+        }
+
+        #asdf {
+            hover: none;
+            color: #fff;
+            font-style: italic;
+        }
+
+        #asdfgh {
+            color: "white";
+            filter: invert(100%);
+        }
+    </style> 
+  <nav id="nav"> 
+   <div class="menu icon"> 
+    <span id="asdfgh" class:="menu-icon" style="font-size:25px;cursor:pointer" onclick="openNav()">☰</span> 
+    <i class="menu-icon"></i> 
+    <div id="mySidenav" class="sidenav"> 
+     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a> 
+     <a id="asdf"> <h1>Anurag Shukla</h1> </a> 
+     <a class="a" href="https://www.instagram.com/myself_anurag_shukla" target="_blank">Instagram</a> 
+     <a class="a" href="https://www.twitter.com/mr_anuragshukla" target="_blank">Twitter</a> 
+     <a class="a" href="https://myselfanurag.wordpress.com" target="_blank">Website</a> 
+     <a class="a" href="https://anurag-shukla.000webhostapp.com/contact_form/formpage.html" target="_blank">Feedback</a> 
+    </div> 
+   </div> 
+   <div id="musicplayername"> 
+    <em> <strong> Music Player</strong></em> 
+   </div> 
+   <div onclick="opensearch()" class="icon"> 
+    <i class="search-icon"> 
+     <svg width="1.5em" height="2em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://dl.w3.org/2000/svg"> 
+      <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"></path> 
+      <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"></path> 
+     </svg> </i> 
+   </div> 
+  </nav> 
+  <div id="sbar" class="searchbar"> 
+   <div onclick="closesearch()" class="back-icon"> 
+    <svg class="bi bi-arrow-left-circle-fill" width="2em" height="2em" viewBox="0 0 16 16" fill="white" xmlns="http://dl.w3.org/2000/svg"> 
+     <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.646 2.646a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L6.207 7.5H11a.5.5 0 0 1 0 1H6.207l2.147 2.146z"></path> 
+    </svg> 
+   </div> 
+   <input oninput="search()" placeholder="Search Songs..." id="inp"> 
+  </div> 
+  <div class="banner"> 
+   <div id="text" class="text"> 
+   </div> 
+  </div> 
+  <div id="container" class="container"> 
+  </div> 
+  <div class="con"> 
+   <div id="loadmusic" class="loadingmusic"> 
+    <div class="loader"> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+     <div></div> 
+    </div> 
+   </div> 
+   <div id="pre" class="preloader"> 
+    <div class="loaders"> 
+    </div> 
+   </div> 
+  </div> 
+  <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "100%";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+        var markup = function(id, name, author) {
+            return `    
+                
+            <div class="card">        
+            <div class="panel">
+            <div class="title">
+                 <Strong>   ${name}</strong>
+                
+                
+            </div>        
+            <div class="author">
+               <em> ${author}</em>
+            </div>
+            
+            <div class="control">           
+            <button onclick="mint()" class="prev">
+                        
+            <svg class="material-icons" width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-skip-backward-fill" fill="currentColor" xmlns="http://dl.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M.5 3.5A.5.5 0 0 0 0 4v8a.5.5 0 0 0 1 0V4a.5.5 0 0 0-.5-.5z"/>
+            <path d="M.904 8.697l6.363 3.692c.54.313 1.233-.066 1.233-.697V4.308c0-.63-.692-1.01-1.233-.696L.904 7.304a.802.802 0 0 0 0 1.393z"/>
+            <path d="M8.404 8.697l6.363 3.692c.54.313 1.233-.066 1.233-.697V4.308c0-.63-.693-1.01-1.233-.696L8.404 7.304a.802.802 0 0 0 0 1.393z"/>
+            </svg>
+                            
+                             
+            </button>
+            <button id="playbtn${id}" onclick="play(this, ${id})" class="playbtn">
+            <svg class="material-icons" width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-play-fill" fill="currentColor" xmlns="http://dl.w3.org/2000/svg">
+            <path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+            </svg>
+            </button>
+                        
+            <button onclick="maxt()" class="next">
+            <svg class="material-icons" width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-skip-forward-fill" fill="currentColor" xmlns="http://dl.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
+            <path d="M7.596 8.697l-6.363 3.692C.693 12.702 0 12.322 0 11.692V4.308c0-.63.693-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+            <path d="M15.096 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.693-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+            </svg>
+            
+            </button>
+            </div>
+            </div>
+            <div class="image">
+           </div>
+            `;
+        };
+        var aud = new Audio();
+        var lastsong = null;
+        var i = 0,
+            text;
+        text = " Music Player"
+
+        function typing() {
+            document.getElementById("text").innerHTML += text.charAt(i);
+            i++;
+        }
+        setInterval(typing, 70);
+        var songs = [{
+            name: "Travis scott x drake",
+            artist: "travis scott,drake",
+            song: "https://dl.dropbox.com/s/9agja2o0q5g1i8v/travis_Scott_x_drake.mp3",
+            isPlay: false
+        }, {
+            name: "Hey DJ",
+            artist: "CNCO",
+            song: "https://dl.dropbox.com/s/184zy6eyakomh6b/Hey_DJ_remix.mp3",
+            isPlay: false
+        }, {
+            name: "Subeme la radio english",
+            artist: "Enrique Iglesias",
+            song: "https://dl.dropbox.com/s/tzajtpppfbxvnvw/subeme_la_radio_english.mp3",
+            isPlay: false
+        }, {
+            name: "Subeme La radio",
+            artist: "Conor Maynard",
+            song: "https://dl.dropbox.com/s/ntemy6ikka9xz24/Subeme_conor_maynard.mp3",
+            isPlay: false
+        }, {
+            name: "Something Just Like This",
+            artist: "Chainsmokers",
+            song: "https://dl.dropbox.com/s/t3sonwtkvue7ldj/Something_Just_Like_This.mp3",
+            isPlay: false
+        }, {
+            name: "Shape Of You",
+            artist: "Ed Sheeran",
+            song: "https://dl.dropbox.com/s/fl4dp2n550fbn20/Shape_Of_You_ed_sheeran.mp3",
+            isPlay: false
+        }, {
+            name: "Se&#241orita",
+            artist: "Camilla cabello",
+            song: "https://dl.dropbox.com/s/x0f2kzv2pvqy7ke/Se%C3%B1orita.mp3",
+            isPlay: false
+        }, {
+            name: "See you again",
+            artist: "Charlie puth",
+            song: "https://dl.dropbox.com/s/irn0i84cqxlt3aw/see_you_again.mp3",
+            isPlay: false
+        }, {
+            name: "Only Human",
+            artist: "---",
+            song: "https://dl.dropbox.com/s/bj8aqxfr9itby3l/Only_Human.mp3",
+            isPlay: false
+        }, {
+            name: "On my way",
+            artist: "Alan Walker",
+            song: "https://dl.dropbox.com/s/0lk1rfbc74gyyd1/on_my_way.mp3",
+            isPlay: false
+        }, {
+            name: "Not over you",
+            artist: "Conor Maynard",
+            song: "https://dl.dropbox.com/s/aydrgpu3wfac6gr/Not_over_you_conor_maynard.mp3",
+            isPlay: false
+        }, {
+            name: "Memories",
+            artist: "maroon 5",
+            song: "https://dl.dropbox.com/s/5508apna98ufv6x/maroon_5_memories.mp3",
+            isPlay: false
+        }, {
+            name: "Girls Like You",
+            artist: "Maroon 5",
+            song: "https://dl.dropbox.com/s/9n13m8cyl2is4in/Maroon_5_Girls_Like_You.mp3",
+            isPlay: false
+        }, {
+            name: "Magenta Riddim",
+            artist: "DJ snake",
+            song: "https://dl.dropbox.com/s/dw54boj0fjpqecv/Magenta_Riddim.mp3",
+            isPlay: false
+        }, {
+            name: "Lost Control ft. Sorana",
+            artist: "Alan Walker",
+            song: "https://dl.dropbox.com/s/6pq3b6hphxo97iu/Lost%20Control_ft.%20Sorana.mp3",
+            isPlay: false
+        }, {
+            name: "Rise",
+            artist: "Katy perry",
+            song: "https://dl.dropbox.com/s/5umbo3gxw2et938/Katy_Perry_Rise.mp3",
+            isPlay: false
+        }, {
+            name: "Love Yourself",
+            artist: "Justin Bieber",
+            song: "https://dl.dropbox.com/s/ddblu1scccg8jhy/Justin_Bieber_Love_Yourself.mp3",
+            isPlay: false
+        }, {
+            name: "Let me love you",
+            artist: "Justin Bieber",
+            song: "https://dl.dropbox.com/s/6u6k42znxy9bx4z/Justin_bieber_Let_me%C3%BDlove_you.mp3",
+            isPlay: false
+        }, {
+            name: "Sorry",
+            artist: "justin bieber",
+            song: "https://dl.dropbox.com/s/qq9ws89peajf46b/Justin%20Bieber%20-%20Sorry%20%28Lyric%20Video%29.mp3",
+            isPlay: false
+        }, {
+            name: "It aint me",
+            artist: "Selena gomez",
+            song: "https://dl.dropbox.com/s/gy7ha9iq242v4vm/It_aint_me.mp3",
+            isPlay: false
+        }, {
+            name: "I don`t care",
+            artist: "justin Bieber",
+            song: "https://dl.dropbox.com/s/00h8p1zigssya60/i-don-t-care.mp3",
+            isPlay: false
+        }, {
+            name: "I don't wanna go",
+            artist: "Alan walker",
+            song: "https://dl.dropbox.com/s/3ytzafcoyj11nzl/I_don%27t_wanna_go.mp3",
+            isPlay: false
+        }, {
+            name: "He's a pirate",
+            artist: "---",
+            song: "https://dl.dropbox.com/s/mo3kqq64z8d5lnq/he%27s_a_pirate.mp3",
+            isPlay: false
+        }, {
+            name: "Faded",
+            artist: "Alan Walker",
+            song: "https://dl.dropbox.com/s/15zrpnarqvaj0vo/Faded.mp3",
+            isPlay: false
+        }, {
+            name: "Faded Piano Version",
+            artist: "---",
+            song: "https://dl.dropbox.com/s/9ethba2v7l4fyi7/Faded_Piano_Version.mp3",
+            isPlay: false
+        }, {
+            name: "Eminem Rap God",
+            artist: "Eminem",
+            song: "https://dl.dropbox.com/s/9fu40i42ul7xfjd/Eminem_Rap_God.mp3",
+            isPlay: false
+        }, {
+            name: "Don t Check",
+            artist: "---",
+            song: "https://dl.dropbox.com/s/6yt446pe249qnfo/Don_t_Check.mp3",
+            isPlay: false
+        }, {
+            name: "Despacito flute",
+            artist: "---",
+            song: "https://dl.dropbox.com/s/8w7pjex7mlx7tub/Despacito_flute.mp3",
+            isPlay: false
+        }, {
+            name: "Darkside",
+            artist: "Alan Walker",
+            song: "https://dl.dropbox.com/s/vml2n2rglcrq97d/Darkside_alan_walker.mp3",
+            isPlay: false
+        }, {
+            name: "Cold water",
+            artist: "justin bieber",
+            song: "https://dl.dropbox.com/s/amomiect11wmc2f/Cold_water.mp3",
+            isPlay: false
+        }, {
+            name: "Attention",
+            artist: "Charlie Puth",
+            song: "https://dl.dropbox.com/s/othycvedrjf97pd/Charlie_Puth_Attention.mp3",
+            isPlay: false
+        }, {
+            name: "Shameless",
+            artist: "Camila cabello",
+            song: "https://dl.dropbox.com/s/j5a4xdm7ykmf1uj/Camila_Cabello_Shameless.mp3",
+            isPlay: false
+        }, {
+            name: "Liar",
+            artist: "Camila cabello",
+            song: "https://dl.dropbox.com/s/5fnhybzntk2l6hc/Camila_Cabello_Liar.mp3",
+            isPlay: false
+        }, {
+            name: "Beautiful People",
+            artist: "---",
+            song: "https://dl.dropbox.com/s/zfrop1tocfmztgv/Beautiful_People.mp3",
+            isPlay: false
+        }, {
+            name: "Be Alright",
+            artist: "Justin bieber",
+            song: "https://dl.dropbox.com/s/32h0hnyitw6xx8r/Be_Alright_justin_bieber.mp3",
+            isPlay: false
+        },{
+            name: "Alone Part II",
+            artist: "Alan Walker & Ava maxx",
+            song: "https://dl.dropbox.com/s/ww2rxhgmeyodpd0/Alone_Part_II_Alan_ava.mp3",
+            isPlay: false
+        }, {
+            name: "The Spectre",
+            artist: "Alan Walker",
+            song: "https://dl.dropbox.com/s/ljct98bgj90chtj/Alan%20Walker%20%E2%80%92%20The%20Spectre%20%28Lyrics%20%20Lyrics%20Video%29.mp3",
+            isPlay: false
+        }, {
+            name: "Sing Me To Sleep",
+            artist: "Alan Walker",
+            song: "https://dl.dropbox.com/s/kyaigev6ul80850/Alan%20Walker%20-%20Sing%20Me%20To%20Sleep.mp3",
+            isPlay: false
+        }, {
+            name: "Alone",
+            artist: "Alan Walker",
+            song: "https://dl.dropbox.com/s/37guciifzllvu3p/Alan%20Walker%20-%20Alone.mp3",
+            isPlay: false
+        }];
+        window.onscroll = function() {
+            var nav = document.getElementById("nav");
+            var textb = document.getElementById("text");
+            textb.style.transform = "translate(0, -" + window.scrollY / 2 + "px)"
+            if(window.scrollY >= 145) {
+                nav.style.background = "#000";
+                musicplayername.style.color = "white";
+            } else {
+                nav.style.background = "transparent";
+                musicplayername.style.color = "transparent";
+            }
+        }
+        window.onload = function() {
+            var container = document.getElementById("container");
+            for(var i = 0; i <= songs.length - 1; i++) {
+                container.innerHTML += markup(i, songs[i].name, songs[i].artist, songs[i].poster);
+            }
+            var pre = document.getElementById("pre");
+            pre.style.display = "none";
+        }
+
+        function opensearch() {
+            document.getElementById("sbar").style.right = "0";
+            scrollTo(0, 145);
+        }
+
+        function closesearch() {
+            document.getElementById("sbar").style.right = "-100%";
+            document.getElementById("inp").value = "";
+            var cardc = document.getElementsByClassName("card");
+            for(var i = 0; i <= cardc.length - 1; i++) {
+                cardc[i].style.display = "";
+            }
+        }
+
+        function search() {
+            var m = document.getElementsByClassName("card");
+            var inp = document.getElementById("inp").value.toUpperCase();
+            for(var i = 0; i <= m.length - 1; i++) {
+                if(m[i].innerHTML.toUpperCase().indexOf(inp) != -1) {
+                    m[i].style.display = "";
+                } else {
+                    m[i].style.display = "none";
+                }
+            }
+        }
+
+        function mint() {
+            var isPlaying = aud.currentTime > 0 && !aud.paused && !aud.ended && aud.readyState > 2;
+            if(isPlaying) {
+                aud.currentTime = aud.currentTime - 10;
+            }
+        }
+
+        function maxt() {
+            var isPlaying = aud.currentTime > 0 && !aud.paused && !aud.ended && aud.readyState > 2;
+            if(isPlaying) {
+                aud.currentTime = aud.currentTime + 10;
+            }
+        }
+
+        function play(e, i) {
+            if(songs[i].isPlay == false) {
+                var loadmusic = document.getElementById("loadmusic");
+                loadmusic.style.transform = "scaleY(1)";
+                aud.addEventListener('loadeddata', function() {
+                    loadmusic.style.transform = "scaleY(0)";
+                }, false);
+                if(lastsong == null) {
+                    e.innerHTML = "<svg class='material-icons' width='2em' height='2em' viewBox='0 0 16 16' class='bi bi-pause-fill' fill='currentColor' xmlns='http://dl.w3.org/2000/svg'><path d='M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z'></svg>";
+                    aud.src = songs[i].song;
+                    aud.play();
+                    songs[i].isPlay = true;
+                    lastsong = i;
+                } else {
+                    songs[lastsong].is = false;
+                    document.getElementById("playbtn" + lastsong).innerHTML = "<svg class='material-icons' width='2em' height='2em' viewBox='0 0 16 16' class='bi bi-play-fill' fill='currentColor' xmlns='http://dl.w3.org/2000/svg'><path d='M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z'/></svg>";
+                    e.innerHTML = "<svg class='material-icons' width='2em' height='2em' viewBox='0 0 16 16' class='bi bi-pause-fill' fill='currentColor' xmlns='http://dl.w3.org/2000/svg'><path d='M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z'></svg>";
+                    aud.src = songs[i].song;
+                    aud.play();
+                    songs[i].isPlay = true;
+                    lastsong = i;
+                }
+            } else {
+                var isPlaying = aud.currentTime > 0 && !aud.paused && !aud.ended && aud.readyState > 2;
+                if(isPlaying) {
+                    e.innerHTML = "<svg class='material-icons' width='2em' height='2em' viewBox='0 0 16 16' class='bi bi-play-fill' fill='currentColor' xmlns='http://dl.w3.org/2000/svg'><path d='M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z'/></svg>";
+                    songs[i].isPlay = false;
+                    aud.pause();
+                    lastsong = null;
+                }
+            }
+        }    
+    </script> 
+ 
+</body></html>
